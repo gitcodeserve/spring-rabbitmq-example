@@ -1,4 +1,4 @@
-package com.example.learning.rabbitmq.controller;
+package com.learning.rabbitmq.controller;
 
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,20 +8,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value = "/rabbitmq/fanout/")
-
-public class RabbitMQFanoutRestController {
+@RequestMapping(value = "/rabbitmq/direct/")
+public class RabbitMQDirectRestController {
 
     @Autowired
     private AmqpTemplate amqpTemplate;
 
     @GetMapping(value = "/producer")
-    public String producer(@RequestParam("exchangeName") String exchange,
+    public String producer(@RequestParam("exchangeName") String exchange, @RequestParam("routingKey") String routingKey,
                            @RequestParam("messageData") String messageData) {
 
-        amqpTemplate.convertAndSend(exchange, "", messageData);
+        amqpTemplate.convertAndSend(exchange, routingKey, messageData);
 
-        return "Message sent to the RabbitMQ Fanout Exchange Successfully";
+        return "Message sent to the RabbitMQ Successfully on direct exchange.";
     }
 
 }
